@@ -170,7 +170,7 @@ This README file will self-destruct in five seconds. Good luck!
 
 
 
-
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/npendery/loft_temperature_feed_challenge/tree/main.svg?style=svg&circle-token=8b399bac2c48847d8c4ce9f65ae84eaafa7e7cb2)](https://dl.circleci.com/status-badge/redirect/gh/npendery/loft_temperature_feed_challenge/tree/main)
 
 ## Setup and run
 
