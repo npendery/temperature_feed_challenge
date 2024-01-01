@@ -1,4 +1,5 @@
-django
+django==5
+django-channels-graphql-ws
 graphene-django
 psycopg2
 websockets
