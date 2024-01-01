@@ -15,11 +15,11 @@ services:
       - db:/var/lib/postgresql/data
 
   backend:
-    build: 
-      context: .
-      dockerfile: Dockerfile
+    build: .
     container_name: temperature_backend
-    command: sh -c "python3 manage.py migrate --noinput && python3 manage.py collectstatic --noinput && python manage.py runserver localhost:8000"
+    volumes:
+      - .:/app
+    command: sh -c "python manage.py makemigrations && python manage.py migrate --noinput && python manage.py runserver 0.0.0.0:8000"
     ports:
       - "8000:8000"
     env_file:
@@ -28,6 +28,7 @@ services:
       - db
   
   external_api:
+    container_name: temperature_api
     image: us.gcr.io/loft-orbital-public/hiring/challenges/ground-software/back-end/satellite-temperature
     ports:
       - "1000:4000"
