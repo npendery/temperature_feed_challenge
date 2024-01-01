@@ -1,1 +1,4 @@
+django
 graphene-django
+psycopg2
+websockets
