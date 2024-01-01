@@ -176,7 +176,7 @@ This README file will self-destruct in five seconds. Good luck!
 
 ### Copy env from example
 ```sh
-$ cp .env .env.example
+$ cp .env.example .env
 ```
 
 ### Start services in background 
