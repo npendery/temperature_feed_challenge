@@ -40,8 +40,8 @@ class Query(graphene.ObjectType):
         min_temperature = filtered_temperatures.order_by('temperature').first()
 
         return TemperatureType(
-            min=min_temperature.temperature,
-            max=max_temperature.temperature
+            min=min_temperature.value,
+            max=max_temperature.value
         )
 
 schema = graphene.Schema(query=Query)
