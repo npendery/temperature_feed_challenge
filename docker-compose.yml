@@ -1,10 +1,12 @@
 version: '3'
+
 services:
   db:
     image: postgres:16.1
     container_name: temperature_db
     restart: always
     environment:
+      - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     ports:
@@ -17,14 +19,18 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: temperature_backend
-    command: sh -c "python3 manage.py migrate --noinput && python3 manage.py collectstatic --noinput && python manage.py runserver 0.0.0.0:8000"
-    restart: always
-    volumes:
-      - .:/app
+    command: sh -c "python3 manage.py migrate --noinput && python3 manage.py collectstatic --noinput && python manage.py runserver localhost:8000"
     ports:
       - "8000:8000"
     env_file:
       - .env
+    depends_on:
+      - db
+  
+  external_api:
+    image: us.gcr.io/loft-orbital-public/hiring/challenges/ground-software/back-end/satellite-temperature
+    ports:
+      - "1000:4000"
 
 volumes:
   db:
