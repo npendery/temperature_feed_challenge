@@ -165,3 +165,32 @@ Graphene-Django
 Just reach out!
 
 This README file will self-destruct in five seconds. Good luck!
+
+
+
+
+
+
+
+## Setup and run
+
+### Copy env from example
+```sh
+$ cp .env .env.example
+```
+
+### Start services in background 
+
+```sh
+$ docker-compose up -d
+```
+
+### Create admin user
+
+```sh
+$ docker exec -ti temperature_backend /bin/bash
+
+app# python manage.py createsuperuser --noinput --username adminuser --email admin@example.com
+```
+
+
