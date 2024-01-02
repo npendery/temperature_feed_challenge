@@ -6,7 +6,7 @@ from asgiref.sync import sync_to_async
 
 class ExternalApi:
     async def ingest_temperatures():
-        uri = "ws://external_api:1000/graphql"
+        uri = "ws://localhost:1000/graphql"
         start = {
             "type": "start",
             "payload": {"query": "subscription { temperature }"}
