@@ -9,7 +9,7 @@ class TemperatureType(DjangoObjectType):
 
     class Meta:
         model = Temperature
-        fields = ("id", "temperature", "timestamp")
+        fields = ("id", "value", "timestamp")
 
 class Query(graphene.ObjectType):
     all_temperatures = graphene.List(TemperatureType)
