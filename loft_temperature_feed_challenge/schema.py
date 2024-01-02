@@ -36,8 +36,8 @@ class Query(graphene.ObjectType):
         if filtered_temperatures.count() == 0:
             return None
         
-        max_temperature = filtered_temperatures.order_by('-temperature').first()
-        min_temperature = filtered_temperatures.order_by('temperature').first()
+        max_temperature = filtered_temperatures.order_by('-value').first()
+        min_temperature = filtered_temperatures.order_by('value').first()
 
         return TemperatureType(
             min=min_temperature.value,
