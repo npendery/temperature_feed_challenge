@@ -7,5 +7,5 @@ class Temperature(models.Model):
     timestamp = models.DateTimeField()
 
     def __str__(self):
-        return f"{self.value} at {self.timestamp}"  
+        return f"{self.value} at {self.timestamp}"
     

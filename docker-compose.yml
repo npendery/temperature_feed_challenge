@@ -39,5 +39,21 @@ services:
     ports:
       - "1000:4000"
 
+  ingest_data:
+    build: .
+    container_name: temperature_ingest
+    volumes:
+      - .:/app
+    command: >
+      sh -c "python manage.py shell < loft_temperature_feed_app/ingest_data.py"
+    ports:
+      - "8001:8001"
+    env_file:
+      - .env
+    depends_on:
+      - db
+      - external_api
+      - backend
+
 volumes:
   db:
