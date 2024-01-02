@@ -27,22 +27,23 @@ SECRET_KEY = 'django-insecure-qmdngniw5)n%zru6yn@%060y*4ge(_6g%71ib3n^%tj^cn35u2
 DEBUG = True
 
 ALLOWED_HOSTS = [
+    '127.0.0.1',
     'localhost',
-    '0.0.0.0'
+    '0.0.0.0',
 ]
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'loft_temperature_feed_app.apps.LoftTemperatureFeedAppConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'loft_temperature_feed_app',
-    'graphene_django'
+    'graphene_django',
 ]
 
 MIDDLEWARE = [
@@ -81,8 +82,12 @@ WSGI_APPLICATION = 'loft_temperature_feed_challenge.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'PASSWORD': 'postgres',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
