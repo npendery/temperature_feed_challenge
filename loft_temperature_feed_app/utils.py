@@ -8,7 +8,7 @@ class ExternalApi:
     task_id = None
 
     async def ingest_temperatures():
-        uri = "ws://localhost:1000/graphql"
+        uri = "ws://external_api:4000/graphql"
         start = {
             "type": "start",
             "payload": {"query": "subscription { temperature }"}

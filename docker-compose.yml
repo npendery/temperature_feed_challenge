@@ -40,26 +40,27 @@ services:
       - db
   
   external_api:
-    container_name: temperature_api
+    container_name: temperature_external_api
     image: us.gcr.io/loft-orbital-public/hiring/challenges/ground-software/back-end/satellite-temperature
     ports:
       - "1000:4000"
 
-  ingest_data:
-    build: .
-    container_name: temperature_ingest
+  celery:
+    image: celery:5.1.2
+    container_name: celery
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: celery -A loft_temperature_feed_challenge worker -l INFO --uid=nobody
     volumes:
       - .:/app
-    command: >
-      sh -c "python manage.py shell < loft_temperature_feed_app/ingest_data.py"
-    ports:
-      - "8001:8001"
-    env_file:
-      - .env
     depends_on:
-      - db
-      - external_api
+      - redis
       - backend
+    links:
+      - redis
+      - external_api
 
 volumes:
   db:
