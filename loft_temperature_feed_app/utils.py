@@ -5,6 +5,8 @@ from loft_temperature_feed_app.models import Temperature
 from asgiref.sync import sync_to_async
 
 class ExternalApi:
+    feed_status = "on"
+
     async def ingest_temperatures():
         uri = "ws://localhost:1000/graphql"
         start = {
@@ -14,11 +16,14 @@ class ExternalApi:
         async with websockets.connect(uri, subprotocols=["graphql-ws"]) as websocket:
             await websocket.send(json.dumps(start))
             while True:
-                data = await websocket.recv()
-                json_data = json.loads(data)
-                temperature = json_data["payload"]["data"]["temperature"]
-                print(temperature)
-                await ExternalApi.save_temperature(temperature)
+                if ExternalApi.feed_status == "on":
+                    data = await websocket.recv()
+                    json_data = json.loads(data)
+                    temperature = json_data["payload"]["data"]["temperature"]
+                    print(temperature)
+                    await ExternalApi.save_temperature(temperature)
+                else:
+                    print("Ingestion stopped")
 
     @sync_to_async
     def save_temperature(self, temperature):

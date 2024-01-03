@@ -2,6 +2,7 @@ import graphene
 from graphene_django import DjangoObjectType
 
 from loft_temperature_feed_app.models import Temperature
+from loft_temperature_feed_app.utils import ExternalApi
 
 class TemperatureType(DjangoObjectType):
     min = graphene.Float()
@@ -11,7 +12,25 @@ class TemperatureType(DjangoObjectType):
         model = Temperature
         fields = ("id", "value", "timestamp")
 
+class ToggleFeedStatusInput(graphene.InputObjectType):
+    status = graphene.String(required=True)
+
+class ToggleFeedStatus(graphene.Mutation):
+    class Arguments:
+        input = ToggleFeedStatusInput(required=True)
+    
+    status = graphene.String()
+
+    def mutate(root, info, input):
+        ExternalApi.feed_status = input.status
+        return ToggleFeedStatus(status=input.status)
+
+class Mutations(graphene.ObjectType):
+    toggle_feed = ToggleFeedStatus.Field()
+    
 class Query(graphene.ObjectType):
+    status = graphene.String()
+
     all_temperatures = graphene.List(TemperatureType)
 
     def resolve_all_temperatures(root, info):
@@ -44,4 +63,4 @@ class Query(graphene.ObjectType):
             max=max_temperature.value
         )
 
-schema = graphene.Schema(query=Query)
+schema = graphene.Schema(query=Query, mutation=Mutations)
