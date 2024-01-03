@@ -3,6 +3,7 @@ from graphene_django import DjangoObjectType
 
 from loft_temperature_feed_app.models import Temperature
 from loft_temperature_feed_app.utils import ExternalApi
+from loft_temperature_feed_app.tasks import ingest_temperatures
 
 class TemperatureType(DjangoObjectType):
     min = graphene.Float()
@@ -22,7 +23,12 @@ class ToggleFeedStatus(graphene.Mutation):
     status = graphene.String()
 
     def mutate(root, info, input):
-        ExternalApi.feed_status = input.status
+        if input.status == "on" and not ExternalApi.task_id:
+            task = ingest_temperatures.delay()
+            ExternalApi.task_id = task.id
+        elif input.status == "off" and ExternalApi.task_id:
+            ingest_temperatures.AsyncResult(task_id=ExternalApi.task_id).revoke(terminate=True)
+        
         return ToggleFeedStatus(status=input.status)
 
 class Mutations(graphene.ObjectType):
