@@ -25,7 +25,7 @@ class ToggleFeedStatus(graphene.Mutation):
 
     status = graphene.String()
 
-    def mutate(self, input):
+    def mutate(root, info, input):
         if input.status == "on" and not ExternalApi.task_id:
             task = ingest_temperatures.delay()
             ExternalApi.task_id = task.id
@@ -46,19 +46,19 @@ class Query(graphene.ObjectType):
 
     all_temperatures = graphene.List(TemperatureType)
 
-    def resolve_all_temperatures(self):
+    def resolve_all_temperatures(root, info):
         return Temperature.objects.all()
 
     current_temperature = graphene.Field(TemperatureType, id=graphene.Int())
 
-    def resolve_current_temperature(self):
+    def resolve_current_temperature(root, info):
         return Temperature.objects.latest("timestamp")
 
     temperature_statistics = graphene.Field(
         TemperatureType, before=graphene.DateTime(), after=graphene.DateTime()
     )
 
-    def resolve_temperature_statistics(self, before=None, after=None, **kwargs):
+    def resolve_temperature_statistics(root, info, before=None, after=None, **kwargs):
         filtered_temperatures = Temperature.objects
 
         if after:
