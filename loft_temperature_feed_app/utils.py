@@ -12,7 +12,7 @@ class ExternalApi:
         "payload": {"query": "subscription { temperature }"}
     }
 
-    async def ingest_temperatures():
+    async def ingest_temperatures() -> None:
         async with websockets.connect(ExternalApi.websocket_uri, subprotocols=["graphql-ws"]) as websocket:
             await websocket.send(json.dumps(ExternalApi.websocket_payload))
             while True:
@@ -22,6 +22,6 @@ class ExternalApi:
                 await ExternalApi.save_temperature(temperature)
 
     @sync_to_async
-    def save_temperature(self, temperature):
+    def save_temperature(self, temperature: float) -> None:
         Temperature.objects.create(value=temperature, timestamp=datetime.now())
 
