@@ -36,6 +36,7 @@ ALLOWED_HOSTS = [
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
     'loft_temperature_feed_app.apps.LoftTemperatureFeedAppConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -45,6 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'graphene_django',
     'celery',
+    
 ]
 
 MIDDLEWARE = [
@@ -151,4 +153,4 @@ CHANNEL_LAYERS = {
 }
 
 CELERY_BROKER_URL = 'redis://redis:6379'
-CELERY_WORKER_CONCURRENCY = 1
+CELERY_WORKER_CONCURRENCY = 3

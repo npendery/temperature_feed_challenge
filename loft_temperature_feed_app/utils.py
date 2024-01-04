@@ -4,6 +4,8 @@ import json
 from loft_temperature_feed_app.models import Temperature
 from asgiref.sync import sync_to_async
 
+from loft_temperature_feed_challenge.schema import TemperatureSubscription
+
 class ExternalApi:
     task_id = None
 
@@ -21,8 +23,13 @@ class ExternalApi:
                 temperature = json_data["payload"]["data"]["temperature"]
                 print(temperature)
                 await ExternalApi.save_temperature(temperature)
+                await ExternalApi.broadcast_temperature(temperature)
 
     @sync_to_async
     def save_temperature(self, temperature):
         Temperature.objects.create(value=temperature, timestamp=datetime.now())
+
+    @sync_to_async
+    def broadcast_temperature(self, temperature):
+        TemperatureSubscription.broadcast(group="group42", payload={"value": temperature})
 

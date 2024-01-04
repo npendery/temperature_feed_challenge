@@ -1,4 +1,6 @@
 import graphene
+import channels_graphql_ws
+
 from graphene_django import DjangoObjectType
 
 from loft_temperature_feed_app.models import Temperature
@@ -31,7 +33,63 @@ class ToggleFeedStatus(graphene.Mutation):
         
         return ToggleFeedStatus(status=input.status)
 
-class Mutations(graphene.ObjectType):
+# subscription {
+#   average_temperature(windowSize: 20) {
+#       value
+#   } 
+# }
+
+class TemperatureSubscription(channels_graphql_ws.Subscription):
+    """Simple GraphQL subscription."""
+
+    # Leave only latest 64 messages in the server queue.
+    notification_queue_limit = 64
+
+    # Subscription payload.
+    value = graphene.Float()
+
+    class Arguments:
+        """That is how subscription arguments are defined."""
+        windowSize = graphene.Int()
+
+    @staticmethod
+    def subscribe(root, info, arg1, arg2):
+        """Called when user subscribes."""
+
+        # Return the list of subscription group names.
+        return ["group42"]
+
+    @staticmethod
+    def publish(payload, info, arg1, arg2):
+        """Called to notify the client."""
+
+        # Here `payload` contains the `payload` from the `broadcast()`
+        # invocation (see below). You can return `None` if you wish to
+        # suppress the notification to a particular client. For example,
+        # this allows to avoid notifications for the actions made by
+        # this particular client.
+
+        return TemperatureSubscription(value="Something has happened!")
+
+    @classmethod
+    async def new_temperature(cls, value):
+        """Auxiliary function to send subscription notifications.
+
+        It is generally a good idea to encapsulate broadcast invocation
+        inside auxiliary class methods inside the subscription class.
+        That allows to consider a structure of the `payload` as an
+        implementation details.
+        """
+        await cls.broadcast(
+            group="group42",
+            payload={"value": value},
+        )
+
+class Subscription(graphene.ObjectType):
+    """Root GraphQL subscription."""
+    average_temperature = TemperatureSubscription.Field()
+
+class Mutation(graphene.ObjectType):
     toggle_feed = ToggleFeedStatus.Field()
     
 class Query(graphene.ObjectType):
@@ -69,4 +127,4 @@ class Query(graphene.ObjectType):
             max=max_temperature.value
         )
 
-schema = graphene.Schema(query=Query, mutation=Mutations)
+schema = graphene.Schema(query=Query, mutation=Mutation, subscription=Subscription)
