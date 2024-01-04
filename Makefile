@@ -19,4 +19,4 @@ format:
 clean:
 	rm -rf __pycache__
 
-.PHONY: run run_daemon test lint clean
+.PHONY: run run_all run_daemon test lint format clean
