@@ -6,20 +6,19 @@ from asgiref.sync import sync_to_async
 
 class ExternalApi:
     task_id = None
+    websocket_uri = "ws://external_api:4000/graphql"
+    websocket_payload = {
+        "type": "start",
+        "payload": {"query": "subscription { temperature }"}
+    }
 
     async def ingest_temperatures():
-        uri = "ws://external_api:4000/graphql"
-        start = {
-            "type": "start",
-            "payload": {"query": "subscription { temperature }"}
-        }
-        async with websockets.connect(uri, subprotocols=["graphql-ws"]) as websocket:
-            await websocket.send(json.dumps(start))
+        async with websockets.connect(ExternalApi.websocket_uri, subprotocols=["graphql-ws"]) as websocket:
+            await websocket.send(json.dumps(ExternalApi.websocket_payload))
             while True:
                 data = await websocket.recv()
                 json_data = json.loads(data)
                 temperature = json_data["payload"]["data"]["temperature"]
-                print(temperature)
                 await ExternalApi.save_temperature(temperature)
 
     @sync_to_async

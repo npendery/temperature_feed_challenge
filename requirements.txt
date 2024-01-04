@@ -1,7 +1,10 @@
 celery
 django==5
-django-channels-graphql-ws
 graphene-django
+mock
 psycopg2
+pytest
+pytest-asyncio
+pytest-django
 redis
 websockets
