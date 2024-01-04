@@ -4,15 +4,14 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('loft_temperature_feed_app', '0002_alter_temperature_timestamp'),
+        ("loft_temperature_feed_app", "0002_alter_temperature_timestamp"),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='temperature',
-            old_name='temperature',
-            new_name='value',
+            model_name="temperature",
+            old_name="temperature",
+            new_name="value",
         ),
     ]

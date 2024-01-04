@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('loft_temperature_feed_app', '0001_initial'),
+        ("loft_temperature_feed_app", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='temperature',
-            name='timestamp',
+            model_name="temperature",
+            name="timestamp",
             field=models.DateTimeField(),
         ),
     ]

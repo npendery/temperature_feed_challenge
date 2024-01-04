@@ -11,6 +11,8 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'loft_temperature_feed_challenge.settings')
+os.environ.setdefault(
+    "DJANGO_SETTINGS_MODULE", "loft_temperature_feed_challenge.settings"
+)
 
 application = get_wsgi_application()

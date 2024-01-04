@@ -3,6 +3,8 @@ django==5
 graphene-django
 mock
 psycopg2
+pylint
+pylint-django
 pytest
 pytest-asyncio
 pytest-django
