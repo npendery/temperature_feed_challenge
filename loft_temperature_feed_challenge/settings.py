@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "graphene_django",
     "celery",
+    "corsheaders",
 ]
 
 MIDDLEWARE = [
@@ -55,6 +56,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
 ]
 
 ROOT_URLCONF = "loft_temperature_feed_challenge.urls"
@@ -150,3 +152,7 @@ CHANNEL_LAYERS = {
 
 CELERY_BROKER_URL = "redis://redis:6379"
 CELERY_WORKER_CONCURRENCY = 1
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+]
