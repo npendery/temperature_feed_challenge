@@ -66,4 +66,13 @@ mutation {
 
 # Challenge Follow Up
 
-This was a fun challenge! There are a couple things I'd like to
+This was a fun challenge! 
+
+A couple notes:
+- The frontend application can be found at https://github.com/npendery/loft_temperature_feed_frontend to view the current temperature.
+
+- I have a [PR](https://github.com/npendery/loft_temperature_feed_challenge/pull/2/files) open for building out the subscription. I was running into some issues with running the subscription service through `django-channels-graphql-ws`. I always appreciate feedback on how I could do it properly.
+
+- Since I am newer to using Django, it would be great to get some feedback on any conventions I missed.
+
+
