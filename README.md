@@ -5,29 +5,36 @@
 
 ## Setup and run application
 
-### Copy env from example
+#### Copy env from example
 ```sh
 $ cp .env.example .env
 ```
 
-### Start services in background 
+#### Start services in background 
 
 ```sh
-$ docker-compose up -d
+$ make run_all
 ```
 
-### Create admin user
+
+#### Start temperature feed
+
+Utilize the GQL mutation request below at the [graph endpoint](localhost:8000/graphql)
+
+#### Create admin user
 
 ```sh
-$ docker exec -ti temperature_backend /bin/bash
+$ docker-compose run -ti backend /bin/bash
 
 app# python manage.py createsuperuser --noinput --username adminuser --email admin@example.com
 ```
+#### View Django admin
 
+View the admin portal [here](localhost:8000/admin)
 
-## GraphQL queries
+## Available GQL queries
 
-
+Get current temperature
 ```graphql
 query {
     currentTemperature {
@@ -35,14 +42,20 @@ query {
         value
     } 
 }
+```
 
+Get min and max temperatures for time period
+```graphql
 query {
     temperatureStatistics(after: "2020-12-06T12:00:00+00:00", before: "2020-12-07T12:00:00+00:00") {
         min
         max
     } 
 }
+```
 
+Toggle the temperature feed
+```graphql
 mutation {
     toggleFeed(input: {status: "on"}) {
         status
@@ -50,3 +63,7 @@ mutation {
 }
 ```
 
+
+# Challenge Follow Up
+
+This was a fun challenge! There are a couple things I'd like to
