@@ -70,9 +70,21 @@ This was a fun challenge!
 
 A couple notes:
 - The frontend application can be found at https://github.com/npendery/loft_temperature_feed_frontend to view the current temperature.
+    - There is a lot more I could of done here, but I timeboxed myself and doing the work to wire up a React app with Apollo hopefully showed my knowledge in that space. I swear I can do CSS...even when most of us dont want to :smiling_imp:
 
 - I have a [PR](https://github.com/npendery/loft_temperature_feed_challenge/pull/2/files) open for building out the subscription. I was running into some issues with running the subscription service through `django-channels-graphql-ws`. I always appreciate feedback on how I could do it properly.
 
 - Since I am newer to using Django, it would be great to get some feedback on any conventions I missed.
+    - Testing websockets - I didnt test `ExternalApi.ingest_temperatures`, but it would be a good test to add.
+    - Test coverage - Where would be some other good tests to add?
+    - Docstrings - I want to make sure they are used appropriately and where they should be added.
 
+- Production deployment
+    - Ive found AWS Elastic Beanstalk a seamless way to deploy web applications. There are many different options out there though and it really depends on how we care about availability, robustness, scaling, etc.
+
+- Further featureset thoughts
+    - Auth layer - A functioning auth layer would be nice to have if this temperature API is private.
+    - More robust querying - The rolling average subscription would have been great to add (dang it!) but even some basic querying on average temperature over a time range would be helpful to a consumer
+    - Degree scale values - Not everyone uses Fahrenheit! If not a DB column, it would be good to have a query arg that allows conversion to another scale.
+    - Notification system - Email or text alerting based on user requirements of temperature going above or below a certain value.
 
